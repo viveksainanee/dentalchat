@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { v4 as uuid } from "uuid";
 import io from "socket.io-client";
 
 const SERVER = "http://localhost:8000";
@@ -22,8 +23,12 @@ function useChat(roomName) {
       const incomingMessage = {
         ...message,
         sentByMe: message.senderId === socketRef.current.id,
+        msgId: uuid(),
+        thread: [],
       };
+      console.log('socketRef :>> ', socketRef);
       setMessages((messages) => [...messages, incomingMessage]);
+      console.log('messages :>> ', messages);
       setIsTyping(false);
     });
 
@@ -39,7 +44,7 @@ function useChat(roomName) {
     return () => {
       socketRef.current.disconnect();
     };
-  }, [roomName]);
+  }, [roomName, messages]);
 
   function sendMessage(fData) {
     socketRef.current.emit("newChat", {

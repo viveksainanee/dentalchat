@@ -35,6 +35,10 @@ function ChatRoom() {
     sendUserNotTyping();
   }
 
+  function handleMsgClick(evt) {
+    console.log('message clicked :>> ', evt);
+  }
+
   // could be const ?
   let typingNotification = isTyping
     ? (<div id="msgBubbles" className="received isTypingDiv">
@@ -45,8 +49,9 @@ function ChatRoom() {
   // could be const ?
   let currMsgs = messages.map((m, i) => (
     <div
-      id="msgBubbles"
-      className={`${m.sentByMe ? "sent ml-auto" : "received"}`}
+      onClick={handleMsgClick}
+      id={`${m.msgId}`}
+      className={`msgBubbles ${m.sentByMe ? "sent ml-auto" : "received"}`}
       key={i}
     >
       <p className="mb-0 px-1">{m.msg}</p>

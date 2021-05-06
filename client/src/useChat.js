@@ -26,9 +26,23 @@ function useChat(roomName) {
         msgId: uuid(),
         thread: [],
       };
-      console.log('socketRef :>> ', socketRef);
+      // console.log('socketRef :>> ', socketRef);
       setMessages((messages) => [...messages, incomingMessage]);
-      console.log('messages :>> ', messages);
+      // console.log('messages :>> ', messages);
+      setIsTyping(false);
+    });
+
+    // Listens for incoming messages in threads
+    socketRef.current.on("newThreadReply", (message) => {
+      const incomingMessage = {
+        ...message,
+        // sentByMe: message.senderId === socketRef.current.id,
+        // msgId: uuid(),
+        // thread: [],
+      };
+      // console.log('socketRef :>> ', socketRef);
+      setMessages((messages) => [...messages, incomingMessage]);
+      // console.log('messages :>> ', messages);
       setIsTyping(false);
     });
 
@@ -54,6 +68,14 @@ function useChat(roomName) {
     });
   }
 
+  function sendInThread(fData) {
+    socketRef.current.emit("newThreadReply", {
+      msg: fData.msg,
+      handle: fData.handle,
+      senderId: socketRef.current.id,
+    });
+  }
+
   function sendUserIsTyping(handle) {
     socketRef.current.emit("userIsTyping", handle);
   }
@@ -65,6 +87,7 @@ function useChat(roomName) {
   return {
     messages,
     sendMessage,
+    sendInThread,
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,

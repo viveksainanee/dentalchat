@@ -4,8 +4,10 @@ import "./Form.css";
 /** Form Component
  *
  *  Props:
+ *    - isThread: Boolean value to determine context of Form
  *    - sendMsg: fn passed down from parent
  *    - notifyTyping: fn passed down from parent
+ *    - removeTyping: fn passed down from parent
  *
  *  State:
  *    - formData:
@@ -16,8 +18,15 @@ import "./Form.css";
  *
  *  App -> ChatRoom -> Form
  */
-function Form({ sendMsg, notifyTyping, removeTyping }) {
+function Form(props) {
   const [formData, setFormData] = useState({ handle: "", msg: "" });
+  const {
+    isThread,
+    sendMsg,
+    replyToThread,
+    notifyTyping,
+    removeTyping,
+  } = props;
 
   function handleChange(evt) {
     // handles formData update while typing
@@ -36,16 +45,19 @@ function Form({ sendMsg, notifyTyping, removeTyping }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    sendMsg(formData);
+    if (!isThread) {
+      sendMsg(formData);
+    } else {
+      replyToThread(formData);
+    }
     setFormData((fData) => ({
       ...fData,
       msg: "",
     }));
   }
 
-  return (
-    <form className="col-10 mx-auto" onSubmit={handleSubmit}>
-      <div className="formField">
+  let handleInput = isThread === "false"
+    ? <div className="formField">
         <input
           onChange={handleChange}
           required
@@ -55,6 +67,11 @@ function Form({ sendMsg, notifyTyping, removeTyping }) {
         />
         <label className="Form-formLabel col-12 text-left">Handle</label>
       </div>
+    : '';
+
+  return (
+    <form className="col-10 mx-auto" onSubmit={handleSubmit}>
+      {handleInput}
       <div className="formField">
         <input
           onChange={handleChange}

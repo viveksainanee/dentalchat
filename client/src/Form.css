@@ -1,9 +1,3 @@
-.ChatRoom {
-    height: 100vh;
-    width: 100vw;
-    background-color: #1d1d1d;
-}
-
 .sendBtn {
     padding: 10px 0 10px 0;
     background-color: #1d1d1d;

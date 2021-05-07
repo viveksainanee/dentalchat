@@ -57,15 +57,19 @@ function ChatRoom() {
     setIsReplying(true);
   }
 
+  function handleLikeMessage() {
+    console.log('message liked')
+  }
+
   // could be const ?
   let currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleReplyClick} className="ChatRoom-msg-reply mr-3">
-            Reply
+          <div onClick={handleLikeMessage} className="ChatRoom-msg-reply">
+            Like
           </div>
-          <div className="ChatRoom-msg-edit">Edit</div>
+          {/* <div className="ChatRoom-msg-edit">Edit</div> */}
         </div>
         <p className="mb-0 px-1">{m.msg}</p>
       </div>
@@ -84,8 +88,8 @@ function ChatRoom() {
       <div className="d-inline-block col-4 text-right">
         <button onClick={closeThreadWindow} className="btn btn-dark">X</button>
       </div>
-        <div className="ChatRoom-msgs col-12 mx-auto">
-        {currThread.msg}
+      <div className="ChatRoom-msgs col-12 mx-auto">
+        <div className={`ChatRoom-msg-txt received`}>{currThread.msg}</div>
         {currThreadMsgs}
         </div>
       <Form
@@ -111,9 +115,13 @@ function ChatRoom() {
     <div key={m[0]} className="ChatRoom-msg-parent">
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
+          <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
+            Like
+          </div>
           <div onClick={handleReplyClick} className="ChatRoom-msg-reply mr-3">
             Reply
           </div>
+          {/* TODO this only for 'my' messages */}
           <div className="ChatRoom-msg-edit">Edit</div>
         </div>
         <p className="mb-0 px-1">{m[1].msg}</p>

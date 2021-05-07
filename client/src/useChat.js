@@ -25,9 +25,16 @@ function useChat(roomName) {
      *************************************
      *************************************/
 
-    // Listens for incoming messages
+    /** Listens for incoming messages 
+     *  message obj like:
+     *  {
+          msgId,
+          msg: fData.msg,
+          handle: fData.handle,
+          senderId: socketRef.current.id,
+        }                                   */
     socketRef.current.on("newChat", (message) => {
-      const msgId = uuid();
+      const msgId = message.msgId;
       const incomingMessage = {
         ...message,
         threadMsgs: [],
@@ -40,17 +47,17 @@ function useChat(roomName) {
     });
 
     /** Listens for incoming messages in threads
-        message is object like:
-                { 
-                  newThreadMsgId: "eb7...", 
-                  msg: "string", 
-                  handle: "string", 
-                  senderId: "2mm..."
-                }                               */
+        message is obj like:
+        { 
+          newThreadMsgId: "eb7...", 
+          msg: "string", 
+          handle: "string", 
+          senderId: "2mm..."
+        }                               */
     socketRef.current.on("newThreadReply", (message) => {
       const threadId = message.newThreadMsgId;
       const replyId = uuid();
-      const existingThreadMsgs = [...messages[threadId].threadMsgs];
+      const existingThreadMsgs = [...messages[threadId]?.threadMsgs];
       const incomingMessage = {
         ...message,
         replyId,
@@ -78,9 +85,12 @@ function useChat(roomName) {
       socketRef.current.disconnect();
     };
   }, [roomName, messages]);
+  /*************** END useEFFECT **************/
 
   function sendMessage(fData) {
+    const msgId = uuid();
     socketRef.current.emit("newChat", {
+      msgId,
       msg: fData.msg,
       handle: fData.handle,
       senderId: socketRef.current.id,

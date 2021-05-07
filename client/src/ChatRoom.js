@@ -19,7 +19,10 @@ import useChat from "./useChat";
  *
  *  Props: NONE
  *
- *  State: NONE
+ *  State:
+ *    - isReplying: Boolean value to control show/hide thread window
+ *    - currThread: object containing original msg for open thread
+ *    - currThreadId: string with unique message id
  *
  *  App -> ChatRoom -> [useChat(roomId), Form]
  */

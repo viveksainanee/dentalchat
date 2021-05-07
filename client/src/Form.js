@@ -6,6 +6,7 @@ import "./Form.css";
  *  Props:
  *    - isThread: Boolean value to determine context of Form
  *    - sendMsg: fn passed down from parent
+ *    - replyToThread: fn passed down from parent
  *    - notifyTyping: fn passed down from parent
  *    - removeTyping: fn passed down from parent
  *

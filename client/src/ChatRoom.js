@@ -1,3 +1,14 @@
+
+/** TODO list: message-threading branch
+ *    add names to each message
+ *    add btn to open up existing thread 
+ *        only shows when thread exists
+ *        shows num msgs in thread
+ *    implement like functionality
+ *    implement edit functionality
+ */
+
+
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form";
@@ -153,3 +164,4 @@ function ChatRoom() {
 }
 
 export default ChatRoom;
+

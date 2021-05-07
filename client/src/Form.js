@@ -45,9 +45,9 @@ function Form(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (!isThread) {
+    if (isThread === "false") {
       sendMsg(formData);
-    } else {
+    } else if (isThread === "true") {
       replyToThread(formData);
     }
     setFormData((fData) => ({
@@ -60,7 +60,7 @@ function Form(props) {
     ? <div className="formField">
         <input
           onChange={handleChange}
-          required
+        required
           name="handle"
           value={formData.handle}
           className="Form-input col-12"

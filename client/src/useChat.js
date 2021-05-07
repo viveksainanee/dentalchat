@@ -9,7 +9,7 @@ const SERVER = "http://localhost:8000";
  *  roomName passed down when hook is called
  */
 function useChat(roomName) {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState({});
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef();
 
@@ -18,31 +18,51 @@ function useChat(roomName) {
       query: { roomName },
     });
 
+
+    /*************************************
+     *************************************
+     ***** Must Update server.js too *****
+     *************************************
+     *************************************/
+
     // Listens for incoming messages
     socketRef.current.on("newChat", (message) => {
+      const msgId = uuid();
       const incomingMessage = {
         ...message,
-        sentByMe: message.senderId === socketRef.current.id,
-        msgId: uuid(),
-        thread: [],
+        threadMsgs: [],
       };
-      // console.log('socketRef :>> ', socketRef);
-      setMessages((messages) => [...messages, incomingMessage]);
-      // console.log('messages :>> ', messages);
+      setMessages((messages) => ({
+        ...messages,
+        [msgId]: incomingMessage,
+      }));
       setIsTyping(false);
     });
 
-    // Listens for incoming messages in threads
+    /** Listens for incoming messages in threads
+        message is object like:
+                { 
+                  newThreadMsgId: "eb7...", 
+                  msg: "string", 
+                  handle: "string", 
+                  senderId: "2mm..."
+                } 
+    */
     socketRef.current.on("newThreadReply", (message) => {
+      const threadId = message.newThreadMsgId;
+      const replyId = uuid();
+      const existingThreadMsgs = [...messages[threadId].threadMsgs];
       const incomingMessage = {
         ...message,
-        // sentByMe: message.senderId === socketRef.current.id,
-        // msgId: uuid(),
-        // thread: [],
+        replyId,
       };
-      // console.log('socketRef :>> ', socketRef);
-      setMessages((messages) => [...messages, incomingMessage]);
-      // console.log('messages :>> ', messages);
+      setMessages((messages) => ({
+        ...messages,
+        [threadId]: ({
+          ...messages[threadId],
+          threadMsgs: [...existingThreadMsgs, incomingMessage],
+        }),
+      }));
       setIsTyping(false);
     });
 
@@ -68,8 +88,10 @@ function useChat(roomName) {
     });
   }
 
-  function sendInThread(fData) {
+  function sendInThread(fData, newThreadMsgId) {
+    // console.log('fdata, newThreadMsgId :>> ', fData, newThreadMsgId);
     socketRef.current.emit("newThreadReply", {
+      newThreadMsgId,
       msg: fData.msg,
       handle: fData.handle,
       senderId: socketRef.current.id,

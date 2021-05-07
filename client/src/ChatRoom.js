@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
@@ -14,7 +14,8 @@ import useChat from "./useChat";
  */
 function ChatRoom() {
   const [isReplying, setIsReplying] = useState(false);
-  const [currThread, setCurrThread] = useState({});
+  const [currThread, setCurrThread] = useState();
+  const [currThreadId, setCurrThreadId] = useState('');
   // set state for room members 
   const { roomName } = useParams();
   const roomId = roomName === "null" ? "Chat Room" : roomName;
@@ -32,7 +33,8 @@ function ChatRoom() {
   }
 
   function replyToThread(fData) {
-    sendInThread(fData);
+    // console.log('currThread :>> ', currThread);
+    sendInThread(fData, currThreadId);
   }
 
   function notifyTyping(handle) {
@@ -50,11 +52,35 @@ function ChatRoom() {
   function handleReplyClick(evt) {
     console.debug("handleReplyClick");
     let newThreadMsgId = evt.target.parentNode.parentNode.id;
-    let messagesCopy = [...messages];
-    let [threadRoot] = messagesCopy.filter((m) => m.msgId === newThreadMsgId);
+    setCurrThreadId(newThreadMsgId);
+    // let messagesCopy = [...messages];
+    // let [threadRoot] = messagesCopy.filter((m) => m.msgId === newThreadMsgId);
+    let threadRoot = messages[newThreadMsgId];
+    // console.log('threadRoot :>> ', threadRoot);
     setCurrThread(threadRoot);
     setIsReplying(true);
   }
+  // could be const ?
+
+  // let messageImLookingFor = currThread.newThreadMsgId;
+  // let threadMsgs = messages[currThreadId]?.threadMsgs || [];
+  // console.log('threadMsgs :>> ', threadMsgs);
+
+  console.log('messages[currThreadId]?.threadMsgs :>> ', messages[currThreadId]?.threadMsgs);
+
+  let currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
+    <div key={m.replyId} className="ChatRoom-msg-parent">
+      <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
+        <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
+          <div onClick={handleReplyClick} className="ChatRoom-msg-reply mr-3">
+            Reply
+          </div>
+          <div className="ChatRoom-msg-edit">Edit</div>
+        </div>
+        <p className="mb-0 px-1">{m.msg}</p>
+      </div>
+    </div>
+  ));
 
   let replyWindow = isReplying
     ? <div className="ChatRoom-reply-container col-4 mx-auto">
@@ -64,12 +90,13 @@ function ChatRoom() {
             <small> with {currThread.handle}</small>
           </span>
         </p>
-        </div>
+      </div>
       <div className="d-inline-block col-4 text-right">
         <button onClick={closeThreadWindow} className="btn btn-dark">X</button>
       </div>
         <div className="ChatRoom-msgs col-12 mx-auto">
-          {currThread.msg}
+        {currThread.msg}
+        {currThreadMsgs}
         </div>
       <Form
         isThread="true"
@@ -89,22 +116,25 @@ function ChatRoom() {
     ""
   );
 
+  // console.log(messages);
+
+
   // could be const ?
-  let currMsgs = messages.map((m, i) => (
-    <div key={`${m.msgId}`} className="ChatRoom-msg-parent">
-      <div id={`${m.msgId}`} className={`ChatRoom-msg-txt received`}>
+  let currMsgs = Object.entries(messages).map((m, i) => (
+    <div key={m[0]} className="ChatRoom-msg-parent">
+      <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
           <div onClick={handleReplyClick} className="ChatRoom-msg-reply mr-3">
             Reply
           </div>
           <div className="ChatRoom-msg-edit">Edit</div>
         </div>
-        <p className="mb-0 px-1">{m.msg}</p>
+        <p className="mb-0 px-1">{m[1].msg}</p>
       </div>
     </div>
   ));
-
-  // console.log("currMsgs :>> ", currMsgs);
+  
+    // console.log('currMsgs :>> ', currMsgs);
 
   return (
     <div className="ChatRoom row">

@@ -33,7 +33,6 @@ function ChatRoom() {
   }
 
   function replyToThread(fData) {
-    // console.log('currThread :>> ', currThread);
     sendInThread(fData, currThreadId);
   }
 
@@ -53,21 +52,12 @@ function ChatRoom() {
     console.debug("handleReplyClick");
     let newThreadMsgId = evt.target.parentNode.parentNode.id;
     setCurrThreadId(newThreadMsgId);
-    // let messagesCopy = [...messages];
-    // let [threadRoot] = messagesCopy.filter((m) => m.msgId === newThreadMsgId);
     let threadRoot = messages[newThreadMsgId];
-    // console.log('threadRoot :>> ', threadRoot);
     setCurrThread(threadRoot);
     setIsReplying(true);
   }
+
   // could be const ?
-
-  // let messageImLookingFor = currThread.newThreadMsgId;
-  // let threadMsgs = messages[currThreadId]?.threadMsgs || [];
-  // console.log('threadMsgs :>> ', threadMsgs);
-
-  console.log('messages[currThreadId]?.threadMsgs :>> ', messages[currThreadId]?.threadMsgs);
-
   let currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
@@ -116,9 +106,6 @@ function ChatRoom() {
     ""
   );
 
-  // console.log(messages);
-
-
   // could be const ?
   let currMsgs = Object.entries(messages).map((m, i) => (
     <div key={m[0]} className="ChatRoom-msg-parent">
@@ -133,8 +120,6 @@ function ChatRoom() {
       </div>
     </div>
   ));
-  
-    // console.log('currMsgs :>> ', currMsgs);
 
   return (
     <div className="ChatRoom row">

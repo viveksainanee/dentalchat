@@ -21,7 +21,7 @@ function useChat(roomName) {
 
     /*************************************
      *************************************
-     ***** Must Update server.js too *****
+     ***** Must Update ../server.js too *****
      *************************************
      *************************************/
 
@@ -46,8 +46,7 @@ function useChat(roomName) {
                   msg: "string", 
                   handle: "string", 
                   senderId: "2mm..."
-                } 
-    */
+                }                               */
     socketRef.current.on("newThreadReply", (message) => {
       const threadId = message.newThreadMsgId;
       const replyId = uuid();
@@ -89,7 +88,6 @@ function useChat(roomName) {
   }
 
   function sendInThread(fData, newThreadMsgId) {
-    // console.log('fdata, newThreadMsgId :>> ', fData, newThreadMsgId);
     socketRef.current.emit("newThreadReply", {
       newThreadMsgId,
       msg: fData.msg,

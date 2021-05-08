@@ -19,7 +19,7 @@ function ChatRoom() {
     messages,
     sendMessage,
     sendUserIsTyping,
-    isTyping,
+    usersCurrentlyTyping,
     sendUserNotTyping,
   } = useChat(roomId);
 
@@ -36,11 +36,14 @@ function ChatRoom() {
   }
 
   // could be const ?
-  let typingNotification = isTyping
-    ? (<div id="msgBubbles" className="received isTypingDiv">
-        <p className="mb-0 px-1">...</p>
-      </div>)
-    : ("");
+  let typingNotification =
+    usersCurrentlyTyping.length !== 0 ? (
+      <div id="msgBubbles" className="received isTypingDiv">
+        <p className="mb-0 px-1">{usersCurrentlyTyping.join(", ")} is typing</p>
+      </div>
+    ) : (
+      ""
+    );
 
   // could be const ?
   let currMsgs = messages.map((m, i) => (
@@ -52,6 +55,8 @@ function ChatRoom() {
       <p className="mb-0 px-1">{m.msg}</p>
     </div>
   ));
+
+  console.log("usersCurrentlyTyping", usersCurrentlyTyping);
 
   return (
     <div className="ChatRoom">

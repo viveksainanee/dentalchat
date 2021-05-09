@@ -35,6 +35,8 @@ function ChatRoom() {
     sendUserNoLongerTyping(handle);
   }
 
+  // usersTypingWithoutMe = [...usersCurrentlyTyping].filter(handle => handle !== )
+
   // could be const ?
   let typingNotification =
     usersCurrentlyTyping.length !== 0 ? (

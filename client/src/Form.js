@@ -16,7 +16,7 @@ import "./Form.css";
  *
  *  App -> ChatRoom -> Form
  */
-function Form({ sendMsg, notifyTyping, removeTyping }) {
+function Form({ sendMsg, notifyTyping, noLongerTyping }) {
   const [formData, setFormData] = useState({ handle: "", msg: "" });
 
   function handleChange(evt) {
@@ -30,7 +30,7 @@ function Form({ sendMsg, notifyTyping, removeTyping }) {
     if (formData.msg.length > 1) {
       notifyTyping(formData.handle);
     } else {
-      removeTyping();
+      noLongerTyping(formData.handle);
     }
   }
 

@@ -24,7 +24,7 @@ function useChat(roomName) {
         sentByMe: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
-      // setIsTyping(false); remove the user from the array of current typers
+      setUsersCurrentlyTyping([]);
     });
 
     socketRef.current.on("userIsTyping", function (handle) {
@@ -36,8 +36,22 @@ function useChat(roomName) {
       });
     });
 
-    socketRef.current.on("userNotTyping", function () {
-      setUsersCurrentlyTyping([]);
+    // this is not being used. need to figure out why
+    socketRef.current.on("userNoLongerTyping", function (handle) {
+      setUsersCurrentlyTyping((usersCurrentlyTyping) => {
+        const indexOfHandleToRemove = usersCurrentlyTyping.indexOf(handle);
+        let newUsersCurrTyping;
+        if (indexOfHandleToRemove >= 0) {
+          newUsersCurrTyping = [
+            ...usersCurrentlyTyping.slice(0, indexOfHandleToRemove),
+            ...usersCurrentlyTyping.slice(
+              indexOfHandleToRemove,
+              indexOfHandleToRemove.length
+            ),
+          ];
+        }
+        return usersCurrentlyTyping;
+      });
     });
 
     // ends connection
@@ -58,8 +72,8 @@ function useChat(roomName) {
     socketRef.current.emit("userIsTyping", handle);
   }
 
-  function sendUserNotTyping() {
-    socketRef.current.emit("userNotTyping");
+  function sendUserNoLongerTyping(handle) {
+    socketRef.current.emit("userNoLongerTyping", handle);
   }
 
   return {
@@ -67,7 +81,7 @@ function useChat(roomName) {
     sendMessage,
     sendUserIsTyping,
     usersCurrentlyTyping,
-    sendUserNotTyping,
+    sendUserNoLongerTyping,
   };
 }
 

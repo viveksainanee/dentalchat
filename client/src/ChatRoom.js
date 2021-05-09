@@ -20,7 +20,7 @@ function ChatRoom() {
     sendMessage,
     sendUserIsTyping,
     usersCurrentlyTyping,
-    sendUserNotTyping,
+    sendUserNoLongerTyping,
   } = useChat(roomId);
 
   function sendMsg(fData) {
@@ -31,8 +31,8 @@ function ChatRoom() {
     sendUserIsTyping(handle);
   }
 
-  function removeTyping() {
-    sendUserNotTyping();
+  function noLongerTyping(handle) {
+    sendUserNoLongerTyping(handle);
   }
 
   // could be const ?
@@ -56,8 +56,6 @@ function ChatRoom() {
     </div>
   ));
 
-  console.log("usersCurrentlyTyping", usersCurrentlyTyping);
-
   return (
     <div className="ChatRoom">
       <div className="ChatRoom-container">
@@ -71,7 +69,7 @@ function ChatRoom() {
         <Form
           sendMsg={sendMsg}
           notifyTyping={notifyTyping}
-          removeTyping={removeTyping}
+          noLongerTyping={noLongerTyping}
         />
       </div>
     </div>

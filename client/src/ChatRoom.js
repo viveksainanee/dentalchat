@@ -80,38 +80,51 @@ function ChatRoom() {
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleLikeMessage} className="ChatRoom-msg-reply">
+          <div onClick={handleLikeMessage} className="ChatRoom-msg-like mr-3">
             Like
           </div>
-          {/* <div className="ChatRoom-msg-edit">Edit</div> */}
+          <div className="ChatRoom-msg-edit">Edit</div>
         </div>
         <p className="mb-0 px-1">{m.msg}</p>
       </div>
     </div>
   ));
 
+  // could be const ?
   let replyWindow = isReplying
     ? <div className="ChatRoom-reply-container col-4 mx-auto">
-      <div className="ChatRoom-name col-8 mt-4 mx-auto d-inline-block">
-        <p>Thread
-          <span className="my-0">
-            <small> with {currThread.handle}</small>
-          </span>
-        </p>
-      </div>
-      <div className="d-inline-block col-4 text-right">
-        <button onClick={closeThreadWindow} className="btn btn-dark">X</button>
-      </div>
-      <div className="ChatRoom-msgs col-12 mx-auto">
-        <div className={`ChatRoom-msg-txt received`}>{currThread.msg}</div>
-        {currThreadMsgs}
+        <div className="ChatRoom-name col-8 mt-4 mx-auto d-inline-block">
+          <p>Thread
+            <span className="my-0">
+              <small> with {currThread.handle}</small>
+            </span>
+          </p>
         </div>
-      <Form
-        isThread="true"
-        sendMsg={sendMsg}
-        replyToThread={replyToThread}
-        notifyTyping={notifyTyping}
-        removeTyping={removeTyping}/>
+        <div className="d-inline-block col-4 text-right">
+          <button onClick={closeThreadWindow} className="btn btn-dark">X</button>
+        </div>
+        <div className="ChatRoom-msgs col-12 mx-auto">
+        <div className="ChatRoom-msg-parent">
+          <div  className={`ChatRoom-msg-txt received`}>
+            <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
+              <div onClick={handleLikeMessage}
+                className="ChatRoom-msg-like">Like
+              </div>
+            </div>
+            <p className="mb-0 px-1">{currThread.msg}</p>
+            
+          </div>
+        </div>
+
+        {currThreadMsgs}
+
+        </div>
+        <Form
+          isThread="true"
+          sendMsg={sendMsg}
+          replyToThread={replyToThread}
+          notifyTyping={notifyTyping}
+          removeTyping={removeTyping}/>
       </div>
     : '';
 
@@ -125,7 +138,7 @@ function ChatRoom() {
   );
 
   // could be const ?
-  let currMsgs = Object.entries(messages).map((m, i) => (
+  let currMsgs = Object.entries(messages).map((m) => (
     <div key={m[0]} className="ChatRoom-msg-parent">
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">

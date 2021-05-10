@@ -2,16 +2,7 @@
     height: 100vh;
     margin: 0;
     background-color: #1d1d1d;
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: center; */
 }
-
-/* .ChatRoom-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-} */
 
 .ChatRoom-name {
     color: #575fd8;
@@ -41,15 +32,27 @@
 .ChatRoom-msg-parent {
     border: solid 1px gray;
     position: relative;
-    /* max-height: 100%; */
 }
 
 .ChatRoom-msg-txt {
     padding: 10px;
-    /* border-radius: 20px; */
     width: fit-content;
     width: calc(100% - 20px);
     margin: 10px 10px;
+}
+
+.ChatRoom-thread-link {
+    color: rgb(20, 149, 255);
+    letter-spacing: 1px;
+    
+}
+
+.ChatRoom-thread-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    border: 1px solid rgba(128, 128, 128, 0.397);
+    border-radius: 8px;
+    background-color: #242424;
 }
 
 .ChatRoom-msg-actions {

@@ -6,6 +6,8 @@
  *        shows num msgs in thread
  *    implement like functionality
  *    implement edit functionality
+ *    only allow edit for messages that are yours
+ *    only allow like for messages that aren't yours
  */
 
 
@@ -58,25 +60,56 @@ function ChatRoom() {
     sendUserNotTyping();
   }
 
+  /** closes thread window */
   function closeThreadWindow() {
     setIsReplying(false);
   }
 
-  function handleReplyClick(evt) {
+  /** given num (0 or 1) and evt, sets state of 
+   *    currThreadId  (ID of the thread that is open)
+   *    currThread    (content of message with currThreadId)
+   *    isReplying    (this opens the thread window)          */
+  function handleReplyClick(num, evt) {
     console.debug("handleReplyClick");
-    let newThreadMsgId = evt.target.parentNode.parentNode.id;
+    let newThreadMsgId = num === 0
+      ? evt.target.parentNode.parentNode.id
+      : evt.target.parentNode.id;
     setCurrThreadId(newThreadMsgId);
     let threadRoot = messages[newThreadMsgId];
     setCurrThread(threadRoot);
     setIsReplying(true);
   }
 
+  /** TODO */
   function handleLikeMessage() {
     console.log('message liked')
   }
 
-  // could be const ?
-  let currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
+  /** given a root message, 
+   *  returns appropriate count and tense (reply vs replies) */
+  // TODO: consider better function name
+  function calculateReplies(msgObject) {
+    if (msgObject.threadMsgs.length === 1) {
+      return (
+        <div
+          onClick={(evt) => handleReplyClick(1, evt)}
+          className="ChatRoom-thread-link my-2 p-2">1 reply
+        </div>
+      );
+    } else if (msgObject.threadMsgs.length > 1) {
+      return (
+        <div
+          onClick={(evt) => handleReplyClick(1, evt)}
+          className="ChatRoom-thread-link my-2 p-2">{msgObject.threadMsgs.length} replies
+        </div>
+      );
+    } else {
+      return '';
+    }
+  }
+
+  /** array of DOM elements containing responses to an original message */
+  const currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
@@ -85,13 +118,13 @@ function ChatRoom() {
           </div>
           <div className="ChatRoom-msg-edit">Edit</div>
         </div>
-        <p className="mb-0 px-1">{m.msg}</p>
+        <p className="mb-0 px-2">{m.msg}</p>
       </div>
     </div>
   ));
 
-  // could be const ?
-  let replyWindow = isReplying
+  /** Reply/Thread window DOM element or nothing (depends on isReplying) */
+  const replyWindow = isReplying
     ? <div className="ChatRoom-reply-container col-4 mx-auto">
         <div className="ChatRoom-name col-8 mt-4 mx-auto d-inline-block">
           <p>Thread
@@ -111,13 +144,10 @@ function ChatRoom() {
                 className="ChatRoom-msg-like">Like
               </div>
             </div>
-            <p className="mb-0 px-1">{currThread.msg}</p>
-            
+            <p className="mb-0 px-2">{currThread.msg}</p>
           </div>
         </div>
-
         {currThreadMsgs}
-
         </div>
         <Form
           isThread="true"
@@ -128,8 +158,7 @@ function ChatRoom() {
       </div>
     : '';
 
-  // could be const ?
-  let typingNotification = isTyping ? (
+  const typingNotification = isTyping ? (
     <div id="msgBubbles" className="received isTypingDiv">
       <p className="mb-0 px-1">...</p>
     </div>
@@ -137,24 +166,25 @@ function ChatRoom() {
     ""
   );
 
-  // could be const ?
-  let currMsgs = Object.entries(messages).map((m) => (
+  /** array of DOM elements containing original messages */
+  const currMsgs = Object.entries(messages).map((m) => (
     <div key={m[0]} className="ChatRoom-msg-parent">
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
           <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
             Like
           </div>
-          <div onClick={handleReplyClick} className="ChatRoom-msg-reply mr-3">
+          <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply mr-3">
             Reply
           </div>
-          {/* TODO this only for 'my' messages */}
           <div className="ChatRoom-msg-edit">Edit</div>
         </div>
-        <p className="mb-0 px-1">{m[1].msg}</p>
+        <p className="mb-0 px-2">{m[1].msg}</p>
+        {calculateReplies(m[1])}
       </div>
     </div>
   ));
+
 
   return (
     <div className="ChatRoom row">

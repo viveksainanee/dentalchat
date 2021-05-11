@@ -1,14 +1,6 @@
 
-/** TODO list: message-threading branch
- *    add names to each message
- *    implement like functionality
- *    implement edit functionality
- *    only allow edit for messages that are yours
- *    only allow like for messages that aren't yours
- */
 
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
@@ -40,7 +32,6 @@ function ChatRoom() {
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,
-    socketRef,
   } = useChat(roomId);
 
   function sendMsg(fData) {
@@ -53,14 +44,12 @@ function ChatRoom() {
 
   function notifyTyping(handle) {
     sendUserIsTyping(handle);
-    setCurrUser(socketRef.current.id);
   }
 
   function removeTyping() {
     sendUserNotTyping();
   }
 
-  /** closes thread window */
   function closeThreadWindow() {
     setIsReplying(false);
   }
@@ -83,7 +72,6 @@ function ChatRoom() {
   /** TODO */
   function handleLikeMessage() {
     console.log('message liked')
-    console.log('socketRef.current.id :>> ', socketRef.current.id);
   }
 
   /** given a root message, 
@@ -115,10 +103,10 @@ function ChatRoom() {
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleLikeMessage} className="ChatRoom-msg-like mr-3">
+          <div onClick={handleLikeMessage} className="ChatRoom-msg-like">
             Like
           </div>
-          <div className="ChatRoom-msg-edit">Edit</div>
+          <div className="ChatRoom-msg-edit ml-3">Edit</div>
         </div>
         <p className="mb-0 px-2">{m.msg}</p>
       </div>
@@ -179,11 +167,7 @@ function ChatRoom() {
           <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
             Reply
           </div>
-          {/* <div className="ChatRoom-msg-edit"> */}
-            { m[1].senderId === currUser
-              ? <div className="ChatRoom-msg-edit ml-3">Edit</div>
-              : ''}
-          {/* </div> */}
+          <div className="ChatRoom-msg-edit ml-3">Edit</div>
         </div>
         <p className="mb-0 px-2">{m[1].msg}</p>
         {calculateReplies(m[1])}

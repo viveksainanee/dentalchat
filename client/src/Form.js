@@ -16,7 +16,7 @@ import "./Form.css";
  *
  *  App -> ChatRoom -> Form
  */
-function Form({ sendMsg, notifyTyping, noLongerTyping }) {
+function Form({ sendMsg, notifyTyping }) {
   const [formData, setFormData] = useState({ handle: "", msg: "" });
 
   function handleChange(evt) {
@@ -29,8 +29,6 @@ function Form({ sendMsg, notifyTyping, noLongerTyping }) {
     // handles typing notification
     if (formData.msg.length > 1) {
       notifyTyping(formData.handle);
-    } else {
-      noLongerTyping(formData.handle);
     }
   }
 

@@ -20,7 +20,6 @@ function ChatRoom() {
     sendMessage,
     sendUserIsTyping,
     usersCurrentlyTyping,
-    sendUserNoLongerTyping,
   } = useChat(roomId);
 
   function sendMsg(fData) {
@@ -31,14 +30,7 @@ function ChatRoom() {
     sendUserIsTyping(handle);
   }
 
-  function noLongerTyping(handle) {
-    sendUserNoLongerTyping(handle);
-  }
-
-  // usersTypingWithoutMe = [...usersCurrentlyTyping].filter(handle => handle !== )
-
-  // could be const ?
-  let typingNotification =
+  const typingNotification =
     usersCurrentlyTyping.length !== 0 ? (
       <div id="msgBubbles" className="received isTypingDiv">
         <p className="mb-0 px-1">{usersCurrentlyTyping.join(", ")} is typing</p>
@@ -47,8 +39,7 @@ function ChatRoom() {
       ""
     );
 
-  // could be const ?
-  let currMsgs = messages.map((m, i) => (
+  const currMsgs = messages.map((m, i) => (
     <div
       id="msgBubbles"
       className={`${m.sentByMe ? "sent ml-auto" : "received"}`}
@@ -68,11 +59,7 @@ function ChatRoom() {
           {currMsgs}
           {typingNotification}
         </div>
-        <Form
-          sendMsg={sendMsg}
-          notifyTyping={notifyTyping}
-          noLongerTyping={noLongerTyping}
-        />
+        <Form sendMsg={sendMsg} notifyTyping={notifyTyping} />
       </div>
     </div>
   );

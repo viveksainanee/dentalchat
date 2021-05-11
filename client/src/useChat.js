@@ -121,6 +121,7 @@ function useChat(roomName) {
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,
+    socketRef,
   };
 }
 

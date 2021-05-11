@@ -1,9 +1,6 @@
 
 /** TODO list: message-threading branch
  *    add names to each message
- *    add btn to open up existing thread 
- *        only shows when thread exists
- *        shows num msgs in thread
  *    implement like functionality
  *    implement edit functionality
  *    only allow edit for messages that are yours
@@ -32,6 +29,7 @@ function ChatRoom() {
   const [isReplying, setIsReplying] = useState(false);
   const [currThread, setCurrThread] = useState();
   const [currThreadId, setCurrThreadId] = useState('');
+  const [currUser, setCurrUser] = useState('');
   // set state for room members 
   const { roomName } = useParams();
   const roomId = roomName === "null" ? "Chat Room" : roomName;
@@ -42,6 +40,7 @@ function ChatRoom() {
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,
+    socketRef,
   } = useChat(roomId);
 
   function sendMsg(fData) {
@@ -54,6 +53,7 @@ function ChatRoom() {
 
   function notifyTyping(handle) {
     sendUserIsTyping(handle);
+    setCurrUser(socketRef.current.id);
   }
 
   function removeTyping() {
@@ -83,6 +83,7 @@ function ChatRoom() {
   /** TODO */
   function handleLikeMessage() {
     console.log('message liked')
+    console.log('socketRef.current.id :>> ', socketRef.current.id);
   }
 
   /** given a root message, 
@@ -107,6 +108,7 @@ function ChatRoom() {
       return '';
     }
   }
+
 
   /** array of DOM elements containing responses to an original message */
   const currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
@@ -174,10 +176,14 @@ function ChatRoom() {
           <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
             Like
           </div>
-          <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply mr-3">
+          <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
             Reply
           </div>
-          <div className="ChatRoom-msg-edit">Edit</div>
+          {/* <div className="ChatRoom-msg-edit"> */}
+            { m[1].senderId === currUser
+              ? <div className="ChatRoom-msg-edit ml-3">Edit</div>
+              : ''}
+          {/* </div> */}
         </div>
         <p className="mb-0 px-2">{m[1].msg}</p>
         {calculateReplies(m[1])}

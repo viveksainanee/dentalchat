@@ -119,6 +119,8 @@ function ChatRoom() {
         <div className="ChatRoom-name col-8 mt-4 mx-auto d-inline-block">
           <p>Thread
             <span className="my-0">
+            {/* 'with ...' should be a list of ppl in the thread 
+                  other than current user */}
               <small> with {currThread.handle}</small>
             </span>
           </p>

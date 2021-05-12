@@ -1,12 +1,12 @@
 .ChatRoom {
     height: 100vh;
     width: 100vw;
-    background-color: #1d1d1d;
+    background-color: var(--primary_dark);
 }
 
 .sendBtn {
     padding: 10px 0 10px 0;
-    background-color: #1d1d1d;
+    background-color: var(--primary_dark);
     border: 1px solid whitesmoke;
     border-radius: 2px;
     color: whitesmoke;
@@ -15,8 +15,8 @@
 .sendBtn:hover {
     text-decoration: none !important;
     color: white;
-    background-color: #474eaf;
-    border: 1px solid #474eaf;
+    background-color: var(--secondary_purple);
+    border: 1px solid var(--secondary_purple);
 }
 
 .formField {
@@ -24,7 +24,7 @@
 }
 
 .Form-input {
-    background-color: #1d1d1d;
+    background-color: var(--primary_dark);
     margin-top: 25px;
     padding: 10px;
     border: none;
@@ -63,6 +63,6 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
-  -webkit-box-shadow: 0 0 0px 1000px #1d1d1d inset;
+  -webkit-box-shadow: 0 0 0px 1000px var(--primary_dark) inset;
   transition: background-color 5000s ease-in-out 0s;
 }

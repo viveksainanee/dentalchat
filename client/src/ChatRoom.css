@@ -7,7 +7,7 @@
 }
 
 .ChatRoom-name {
-    color: #575fd8;
+    color: var(--primary_purple);
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 1px;
@@ -22,12 +22,12 @@
 }
 
 .sent {
-    background-color: #474eaf;
+    background-color: var(--secondary_purple);
     border-radius: 20px 20px 0 20px;
 }
 
 .received {
-    background-color: #1d1d1d;
+    background-color: var(--primary_dark);
     border-radius: 20px 20px 20px 0;
 }
 
@@ -38,7 +38,9 @@
     background-color: #242424;
     color: whitesmoke;
     border-radius: 15px;
-    box-shadow: 3px 3px .5em .01em #474eaf, -3px -3px .5em .01em #474eaf, inset 0px 0px .4em #2e2e2e;
+    box-shadow: 3px 3px .5em .01em var(--secondary_purple), 
+                -3px -3px .5em .01em var(--secondary_purple), 
+                inset 0px 0px .4em #2e2e2e;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

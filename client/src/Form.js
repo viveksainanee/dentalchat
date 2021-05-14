@@ -61,7 +61,7 @@ function Form(props) {
     ? <div className="formField">
         <input
           onChange={handleChange}
-        required
+          required
           name="handle"
           value={formData.handle}
           className="Form-input col-12"
@@ -80,10 +80,10 @@ function Form(props) {
           name="msg"
           id="msgInput"
           value={formData.msg}
-          className="Form-input col-10"
+          className="Form-input col-9"
         />
         <label className="Form-formLabel col-12 text-left">Message</label>
-        <button type="submit" className="sendBtn col-2">
+        <button type="submit" className="sendBtn col-3">
           Send
         </button>
       </div>

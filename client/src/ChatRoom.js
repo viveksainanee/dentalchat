@@ -21,7 +21,7 @@ function ChatRoom() {
   const [isReplying, setIsReplying] = useState(false);
   const [currThread, setCurrThread] = useState();
   const [currThreadId, setCurrThreadId] = useState('');
-  const [currUser, setCurrUser] = useState('');
+  const [currUser, setCurrUser] = useState(false);
   // set state for room members 
   const { roomName } = useParams();
   const roomId = roomName === "null" ? "Chat Room" : roomName;
@@ -36,6 +36,8 @@ function ChatRoom() {
 
   function sendMsg(fData) {
     sendMessage(fData);
+    /** TODO: currUser should eventually be set in settings before app can be   used */
+    if (!currUser) setCurrUser(fData.handle);
   }
 
   function replyToThread(fData) {
@@ -108,10 +110,13 @@ function ChatRoom() {
           </div>
           <div className="ChatRoom-msg-edit ml-3">Edit</div>
         </div>
+        <p className="font-weight-bold mb-1 px-2">{currUser}</p>
         <p className="mb-0 px-2">{m.msg}</p>
       </div>
     </div>
   ));
+
+  console.log('messages[currThread].threadMsgs :>> ', messages[currThreadId]?.threadMsgs);
 
   /** Reply/Thread window DOM element or nothing (depends on isReplying) */
   const replyWindow = isReplying
@@ -136,6 +141,7 @@ function ChatRoom() {
                 className="ChatRoom-msg-like">Like
               </div>
             </div>
+            <p className="font-weight-bold mb-1 px-2">{currThread.handle}</p>
             <p className="mb-0 px-2">{currThread.msg}</p>
           </div>
         </div>
@@ -171,7 +177,8 @@ function ChatRoom() {
           </div>
           <div className="ChatRoom-msg-edit ml-3">Edit</div>
         </div>
-        <p className="mb-0 px-2">{m[1].msg}</p>
+        <p className="font-weight-bold mb-1 px-2">{m[1].handle}</p>
+        <p className="font-weight-light mb-0 px-2">{m[1].msg}</p>
         {calculateReplies(m[1])}
       </div>
     </div>

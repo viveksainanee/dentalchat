@@ -9,7 +9,7 @@ const SERVER = "http://localhost:8000";
  */
 function useChat(roomName) {
   const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [usersCurrentlyTyping, setUsersCurrentlyTyping] = useState([]);
   const socketRef = useRef();
 
   useEffect(() => {
@@ -24,15 +24,16 @@ function useChat(roomName) {
         sentByMe: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
-      setIsTyping(false);
+      setUsersCurrentlyTyping([]);
     });
 
     socketRef.current.on("userIsTyping", function (handle) {
-      setIsTyping(true);
-    });
-
-    socketRef.current.on("userNotTyping", function () {
-      setIsTyping(false);
+      setUsersCurrentlyTyping((usersCurrentlyTyping) => {
+        if (!usersCurrentlyTyping.includes(handle)) {
+          return [...usersCurrentlyTyping, handle];
+        }
+        return usersCurrentlyTyping;
+      });
     });
 
     // ends connection
@@ -53,16 +54,11 @@ function useChat(roomName) {
     socketRef.current.emit("userIsTyping", handle);
   }
 
-  function sendUserNotTyping() {
-    socketRef.current.emit("userNotTyping");
-  }
-
   return {
     messages,
     sendMessage,
     sendUserIsTyping,
-    isTyping,
-    sendUserNotTyping,
+    usersCurrentlyTyping,
   };
 }
 

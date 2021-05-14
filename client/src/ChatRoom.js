@@ -19,8 +19,7 @@ function ChatRoom() {
     messages,
     sendMessage,
     sendUserIsTyping,
-    isTyping,
-    sendUserNotTyping,
+    usersCurrentlyTyping,
   } = useChat(roomId);
 
   function sendMsg(fData) {
@@ -31,19 +30,16 @@ function ChatRoom() {
     sendUserIsTyping(handle);
   }
 
-  function removeTyping() {
-    sendUserNotTyping();
-  }
+  const typingNotification =
+    usersCurrentlyTyping.length !== 0 ? (
+      <div id="msgBubbles" className="received isTypingDiv">
+        <p className="mb-0 px-1">{usersCurrentlyTyping.join(", ")} is typing</p>
+      </div>
+    ) : (
+      ""
+    );
 
-  // could be const ?
-  let typingNotification = isTyping
-    ? (<div id="msgBubbles" className="received isTypingDiv">
-        <p className="mb-0 px-1">...</p>
-      </div>)
-    : ("");
-
-  // could be const ?
-  let currMsgs = messages.map((m, i) => (
+  const currMsgs = messages.map((m, i) => (
     <div
       id="msgBubbles"
       className={`${m.sentByMe ? "sent ml-auto" : "received"}`}
@@ -63,11 +59,7 @@ function ChatRoom() {
           {currMsgs}
           {typingNotification}
         </div>
-        <Form
-          sendMsg={sendMsg}
-          notifyTyping={notifyTyping}
-          removeTyping={removeTyping}
-        />
+        <Form sendMsg={sendMsg} notifyTyping={notifyTyping} />
       </div>
     </div>
   );

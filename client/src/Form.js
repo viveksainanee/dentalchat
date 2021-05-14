@@ -71,7 +71,7 @@ function Form(props) {
     : '';
 
   return (
-    <form className="col-10 mx-auto" onSubmit={handleSubmit}>
+    <form className="col-11 mx-auto" onSubmit={handleSubmit}>
       {handleInput}
       <div className="formField">
         <input
@@ -80,13 +80,14 @@ function Form(props) {
           name="msg"
           id="msgInput"
           value={formData.msg}
-          className="Form-input col-12"
+          className="Form-input col-10"
         />
         <label className="Form-formLabel col-12 text-left">Message</label>
+        <button type="submit" className="sendBtn col-2">
+          Send
+        </button>
       </div>
-      <button type="submit" className="col-12 sendBtn">
-        Send
-      </button>
+      
     </form>
   );
 }

@@ -32,6 +32,7 @@ function useChat(roomName) {
           msg: fData.msg,
           handle: fData.handle,
           senderId: socketRef.current.id,
+          usersWhoLiked,
         }                                   */
     socketRef.current.on("newChat", (message) => {
       const msgId = message.msgId;
@@ -45,6 +46,23 @@ function useChat(roomName) {
       }));
       setIsTyping(false);
     });
+
+    /** Listens for incoming liked messages from primary chat window */
+    socketRef.current.on("userLikedPrimaryMessage", (likeData) => {
+      const { msgId, handle } = likeData;
+      if (messages[msgId]?.usersWhoLiked.includes(handle)) {
+        return;
+      }
+      const usersWhoLikedCopy = [...messages[msgId]?.usersWhoLiked];
+      setMessages((messages) => ({
+        ...messages,
+        [msgId]: ({
+          ...messages[msgId],
+          usersWhoLiked: [...usersWhoLikedCopy, handle],
+        }),
+      }));
+    });
+    // console.log('messages :>> ', messages);
 
     /** Listens for incoming messages in threads
         message is obj like:
@@ -80,6 +98,7 @@ function useChat(roomName) {
       setIsTyping(false);
     });
 
+
     // ends connection
     return () => {
       socketRef.current.disconnect();
@@ -94,9 +113,15 @@ function useChat(roomName) {
       msg: fData.msg,
       handle: fData.handle,
       senderId: socketRef.current.id,
+      usersWhoLiked: [],
     });
   }
 
+  function likedPrimaryMessage(msgId, handle) {
+    const likeData = { msgId, handle, }
+    socketRef.current.emit("userLikedPrimaryMessage", likeData);
+  }
+  
   function sendInThread(fData, newThreadMsgId) {
     socketRef.current.emit("newThreadReply", {
       newThreadMsgId,
@@ -113,7 +138,7 @@ function useChat(roomName) {
   function sendUserNotTyping() {
     socketRef.current.emit("userNotTyping");
   }
-
+  
   return {
     messages,
     sendMessage,
@@ -121,6 +146,7 @@ function useChat(roomName) {
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,
+    likedPrimaryMessage,
   };
 }
 

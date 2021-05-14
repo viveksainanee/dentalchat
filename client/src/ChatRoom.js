@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
@@ -32,10 +32,12 @@ function ChatRoom() {
     sendUserIsTyping,
     isTyping,
     sendUserNotTyping,
+    likedPrimaryMessage,
   } = useChat(roomId);
 
   function sendMsg(fData) {
     sendMessage(fData);
+    setCurrUser(fData.handle);
   }
 
   function replyToThread(fData) {
@@ -57,7 +59,10 @@ function ChatRoom() {
   /** given num (0 or 1) and evt, sets state of 
    *    currThreadId  (ID of the thread that is open)
    *    currThread    (content of message with currThreadId)
-   *    isReplying    (this opens the thread window)          */
+   *    isReplying    (this opens the thread window)
+   *   0 / 1 determines how thread window is opened 
+   *      - 0 = via reply in msg actions tab
+   *      - 1 = via thread count link                        */
   function handleReplyClick(num, evt) {
     console.debug("handleReplyClick");
     let newThreadMsgId = num === 0
@@ -69,27 +74,58 @@ function ChatRoom() {
     setIsReplying(true);
   }
 
-  /** TODO */
-  function handleLikeMessage() {
-    console.log('message liked')
+  function handleLikeMessage(num, evt) {
+    console.debug("handleLikeClick");
+    let likedMessageId = evt.target.parentNode.parentNode.id;
+    if (num === 0) {
+      likedPrimaryMessage(likedMessageId, currUser);
+    } else if (num === 1) {
+      console.log('like thread message');
+      // TODO
+      // likedThreadMessage(likedMessageId, currUser);
+    }
   }
 
   /** given a root message, 
-   *  returns appropriate count and tense (reply vs replies) */
+   *  returns appropriate count and tense of replies (reply vs replies) */
   // TODO: consider better function name
   function calculateReplies(msgObject) {
     if (msgObject.threadMsgs.length === 1) {
       return (
         <div
           onClick={(evt) => handleReplyClick(1, evt)}
-          className="ChatRoom-thread-link my-2 p-2">1 reply
+          className="ChatRoom-thread-link my-1 pl-2 py-2">1 reply
         </div>
       );
     } else if (msgObject.threadMsgs.length > 1) {
       return (
         <div
           onClick={(evt) => handleReplyClick(1, evt)}
-          className="ChatRoom-thread-link my-2 p-2">{msgObject.threadMsgs.length} replies
+          className="ChatRoom-thread-link my-1 pl-2 py-1">
+          {msgObject.threadMsgs.length} replies
+        </div>
+      );
+    } else {
+      return '';
+    }
+  }
+
+  /** given a root message,
+   *  returns appropriate count and tense of likes (like vs likes) */
+  // TODO: consider better function name
+  // TODO: change className and style accordingly
+  function displayLikes(msgObject) {
+    if (msgObject.usersWhoLiked.length === 1) {
+      return (
+        <div
+          className="ChatRoom-thread-link my-1 pl-2 py-1">1 like
+        </div>
+      );
+    } else if (msgObject.usersWhoLiked.length > 1) {
+      return (
+        <div
+          className="ChatRoom-thread-link my-1 pl-2 py-1">
+          {msgObject.usersWhoLiked.length} likes
         </div>
       );
     } else {
@@ -103,7 +139,9 @@ function ChatRoom() {
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleLikeMessage} className="ChatRoom-msg-like">
+          <div
+            onClick={(evt) => handleLikeMessage(1, evt)}
+            className="ChatRoom-msg-like">
             Like
           </div>
           <div className="ChatRoom-msg-edit ml-3">Edit</div>
@@ -126,13 +164,16 @@ function ChatRoom() {
           </p>
         </div>
         <div className="d-inline-block col-4 text-right">
-          <button onClick={closeThreadWindow} className="btn btn-dark">X</button>
+        <button onClick={closeThreadWindow} className="btn btn-dark">
+          X
+        </button>
         </div>
         <div className="ChatRoom-msgs col-12 mx-auto">
         <div className="ChatRoom-msg-parent">
-          <div  className={`ChatRoom-msg-txt received`}>
+          <div id={currThread.msgId} className={`ChatRoom-msg-txt received`}>
             <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-              <div onClick={handleLikeMessage}
+              <div
+                onClick={(evt) => handleLikeMessage(0, evt)}
                 className="ChatRoom-msg-like">Like
               </div>
             </div>
@@ -163,15 +204,20 @@ function ChatRoom() {
     <div key={m[0]} className="ChatRoom-msg-parent">
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
+          <div
+            onClick={(evt) => handleLikeMessage(0, evt)}
+            className="ChatRoom-msg-reply mr-3">
             Like
           </div>
-          <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
+          <div
+            onClick={(evt) => handleReplyClick(0, evt)}
+            className="ChatRoom-msg-reply">
             Reply
           </div>
           <div className="ChatRoom-msg-edit ml-3">Edit</div>
         </div>
         <p className="mb-0 px-2">{m[1].msg}</p>
+        {displayLikes(m[1])}
         {calculateReplies(m[1])}
       </div>
     </div>

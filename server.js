@@ -32,6 +32,11 @@ io.on("connection", (socket) => {
     io.in(roomName).emit("userNotTyping");
   })
 
+  // listens for user liking message in primary chat window
+  socket.on("userLikedPrimaryMessage", (likeData) => {
+    io.in(roomName).emit("userLikedPrimaryMessage", likeData);
+  })
+
   socket.on("disconnect", () => {
     socket.leave(roomName);
   });

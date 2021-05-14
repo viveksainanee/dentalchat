@@ -63,9 +63,14 @@ function ChatRoom() {
    *    isReplying    (this opens the thread window)          */
   function handleReplyClick(num, evt) {
     console.debug("handleReplyClick");
-    let newThreadMsgId = num === 0
-      ? evt.target.parentNode.parentNode.id
-      : evt.target.parentNode.id;
+    let newThreadMsgId;
+    if (evt.target.id === 'svg') {
+      newThreadMsgId = evt.target.parentNode.parentNode.id;
+    } else {
+      newThreadMsgId = num === 0
+        ? evt.target.parentNode.parentNode.parentNode.id
+        : evt.target.parentNode.id;
+    }
     setCurrThreadId(newThreadMsgId);
     let threadRoot = messages[newThreadMsgId];
     setCurrThread(threadRoot);
@@ -119,8 +124,6 @@ function ChatRoom() {
     </div>
   ));
 
-  console.log('messages[currThread].threadMsgs :>> ', messages[currThreadId]?.threadMsgs);
-
   /** Reply/Thread window DOM element or nothing (depends on isReplying) */
   const replyWindow = isReplying
     ? <div className="ChatRoom-reply-container col-4 mx-auto">
@@ -173,17 +176,19 @@ function ChatRoom() {
   const currMsgs = Object.entries(messages).map((m) => (
     <div key={m[0]} className="ChatRoom-msg-parent">
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
-        <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-          <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
-            <FontAwesomeIcon icon="thumbs-up" />
-          </div>
-          <div
-            onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
-            <FontAwesomeIcon icon="comment-dots" />
-          </div>
-          <div className="ChatRoom-msg-edit ml-3">
-            <FontAwesomeIcon icon="edit" />
-          </div>
+        <div className="ChatRoom-msg-actions mr-3 px-3 py-2">
+          <FontAwesomeIcon
+            className="ChatRoom-msg-reply mr-3 m-1"
+            onClick={handleLikeMessage}
+            icon="thumbs-up" />
+          <FontAwesomeIcon
+            id="svg"
+            className="ChatRoom-msg-reply-btn m-1"
+            icon="comment-dots"
+            onClick={(evt) => handleReplyClick(0, evt)} />
+          <FontAwesomeIcon
+            className="ChatRoom-msg-edit ml-3 m-1"
+            icon="edit" />
         </div>
         <p className="font-weight-bold mb-1 px-2">{m[1].handle}</p>
         <p className="font-weight-light mb-0 px-2">{m[1].msg}</p>

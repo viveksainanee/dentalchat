@@ -26,6 +26,7 @@
     outline: none;
     border-bottom: .12rem solid #828282c4;
     color: whitesmoke;
+    width: calc(100% - 50px);
 }
 
 /* #msgInput {

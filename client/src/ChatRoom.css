@@ -51,7 +51,7 @@
     text-decoration: underline;
     cursor: pointer;
     border: 1px solid rgba(128, 128, 128, 0.397);
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: #242424;
 }
 
@@ -61,8 +61,10 @@
     /* visibility: hidden; */
     right: 0px;
     top: -15px;
-    background-color: white;
-    color: #1d1d1d;
+    background-color: #1d1d1d;
+    color: lightgrey;
+    border: 1px solid #8282825e;
+    border-radius: 5px;
 }
 
 /* .ChatRoom-msg-txt:hover ~ .ChatRoom-msg-actions {

@@ -65,7 +65,7 @@ function Form(props) {
           required
           name="handle"
           value={formData.handle}
-          className="Form-input col-12"
+          className="Form-input"
         />
         <label className="Form-formLabel col-12 text-left">Handle</label>
       </div>
@@ -81,7 +81,7 @@ function Form(props) {
           name="msg"
           id="msgInput"
           value={formData.msg}
-          className="Form-input col-9"
+          className="Form-input"
         />
         <label className="Form-formLabel col-12 text-left">Message</label>
         <button type="submit" className="sendBtn px-3">

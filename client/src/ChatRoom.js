@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
 import useChat from "./useChat";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /** ChatRoom Component
  *
@@ -106,9 +107,11 @@ function ChatRoom() {
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
           <div onClick={handleLikeMessage} className="ChatRoom-msg-like">
-            Like
+            <FontAwesomeIcon icon="thumbs-up" />
           </div>
-          <div className="ChatRoom-msg-edit ml-3">Edit</div>
+          <div className="ChatRoom-msg-edit ml-3">
+            <FontAwesomeIcon icon="edit" />
+          </div>
         </div>
         <p className="font-weight-bold mb-1 px-2">{currUser}</p>
         <p className="mb-0 px-2">{m.msg}</p>
@@ -137,8 +140,10 @@ function ChatRoom() {
         <div className="ChatRoom-msg-parent">
           <div  className={`ChatRoom-msg-txt received`}>
             <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
-              <div onClick={handleLikeMessage}
-                className="ChatRoom-msg-like">Like
+              <div
+                onClick={handleLikeMessage}
+                className="ChatRoom-msg-like">
+                <FontAwesomeIcon icon="thumbs-up" />
               </div>
             </div>
             <p className="font-weight-bold mb-1 px-2">{currThread.handle}</p>
@@ -170,12 +175,15 @@ function ChatRoom() {
       <div id={m[0]} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
           <div onClick={handleLikeMessage} className="ChatRoom-msg-reply mr-3">
-            Like
+            <FontAwesomeIcon icon="thumbs-up" />
           </div>
-          <div onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
-            Reply
+          <div
+            onClick={(evt) => handleReplyClick(0, evt)} className="ChatRoom-msg-reply">
+            <FontAwesomeIcon icon="comment-dots" />
           </div>
-          <div className="ChatRoom-msg-edit ml-3">Edit</div>
+          <div className="ChatRoom-msg-edit ml-3">
+            <FontAwesomeIcon icon="edit" />
+          </div>
         </div>
         <p className="font-weight-bold mb-1 px-2">{m[1].handle}</p>
         <p className="font-weight-light mb-0 px-2">{m[1].msg}</p>

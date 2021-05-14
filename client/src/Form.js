@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Form.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /** Form Component
  *
@@ -83,8 +84,8 @@ function Form(props) {
           className="Form-input col-9"
         />
         <label className="Form-formLabel col-12 text-left">Message</label>
-        <button type="submit" className="sendBtn col-3">
-          Send
+        <button type="submit" className="sendBtn px-3">
+          <FontAwesomeIcon icon="paper-plane" />
         </button>
       </div>
       

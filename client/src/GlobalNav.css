@@ -1,0 +1,16 @@
+.GlobalNav-container {
+  height: 90px;
+  width: 100vw;
+  background-color: #343434;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+.GlobalNav-div {
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

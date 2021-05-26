@@ -2,7 +2,7 @@
 .sendBtn {
     padding: 10px 0 10px 0;
     background-color: #1d1d1d;
-    border: 1px solid whitesmoke;
+    border: .12rem solid #828282c4;
     border-radius: 2px;
     color: whitesmoke;
 }
@@ -11,7 +11,7 @@
     text-decoration: none !important;
     color: white;
     background-color: #474eaf;
-    border: 1px solid #474eaf;
+    border: .12rem solid #474eaf;
 }
 
 .formField {
@@ -26,7 +26,11 @@
     outline: none;
     border-bottom: .12rem solid #828282c4;
     color: whitesmoke;
-    width: calc(100% - 50px);
+    width: 100%;
+}
+
+#msgInput {
+    width: calc(100% - 52px);
 }
 
 /* #msgInput {

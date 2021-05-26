@@ -5,10 +5,12 @@
 }
 
 .ChatRoom-name {
+    display: flex;
     color: #575fd8;
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 1px;
+    height: 80px;
 }
 
 .received {
@@ -18,8 +20,8 @@
 
 .ChatRoom-msgs {
     position: relative;
-    height: 400px;
-    padding: 20px 20px;
+    height: 600px;
+    padding: 20px;
     background-color: #242424;
     color: whitesmoke;
     border-radius: 15px;
@@ -27,6 +29,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    overflow: auto;
 }
 
 .ChatRoom-msg-parent {

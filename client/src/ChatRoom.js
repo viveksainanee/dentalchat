@@ -132,8 +132,7 @@ function ChatRoom() {
       
       <div className="ChatRoom-name col-12 p-3">
         <div className="my-auto"><p className="my-0">Thread<span>
-            {/* 'with ...' should be a list of ppl in the thread 
-                  other than current user */}
+            {/* TODO 'with ...' should contain x number of participants */}
             <small> with {currThread.handle}</small>
           </span>
           </p>

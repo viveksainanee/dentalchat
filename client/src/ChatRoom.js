@@ -3,6 +3,11 @@ import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
 import useChat from "./useChat";
+import {
+  faThumbsUp,
+  faCommentDots,
+  faEdit
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /** ChatRoom Component
@@ -11,15 +16,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
  *
  *  State:
  *    - isReplying: Boolean value to control show/hide thread window
- *    - currThread: object containing original msg for open thread
- *    - currThreadId: string with unique message id
+ *    - currentThread: object containing original msg for open thread
+ *    - currentThreadId: string with unique message id
  *
  *  App -> ChatRoom -> [useChat(roomId), Form]
  */
 function ChatRoom() {
   const [isReplying, setIsReplying] = useState(false);
-  const [currThread, setCurrThread] = useState();
-  const [currThreadId, setCurrThreadId] = useState("");
+  const [currentThread, setCurrentThread] = useState();
+  const [currentThreadId, setCurrentThreadId] = useState("");
   const [currUser, setCurrUser] = useState(false);
   // set state for room members
   const { roomName } = useParams();
@@ -35,12 +40,12 @@ function ChatRoom() {
 
   function sendMsg(fData) {
     sendMessage(fData);
-    /** TODO: currUser should eventually be set in settings before app can be   used */
+    /** TODO: currUser should be set in settings before app can be used */
     if (!currUser) setCurrUser(fData.handle);
   }
 
-  function replyToThread(fData) {
-    sendInThread(fData, currThreadId);
+  function replyInThread(fData) {
+    sendInThread(fData, currentThreadId);
   }
 
   function notifyTyping(handle) {
@@ -56,8 +61,8 @@ function ChatRoom() {
   }
 
   /** given num (0 or 1) and evt, sets state of
-   *    currThreadId  (ID of the thread that is open)
-   *    currThread    (content of message with currThreadId)
+   *    currentThreadId  (ID of the thread that is open)
+   *    currentThread    (content of message with currentThreadId)
    *    isReplying    (this opens the thread window)          */
   function handleReplyClick(num, evt) {
     console.debug("handleReplyClick");
@@ -70,9 +75,9 @@ function ChatRoom() {
           ? evt.target.parentNode.parentNode.parentNode.id
           : evt.target.parentNode.id;
     }
-    setCurrThreadId(newThreadMsgId);
+    setCurrentThreadId(newThreadMsgId);
     let threadRoot = messages[newThreadMsgId];
-    setCurrThread(threadRoot);
+    setCurrentThread(threadRoot);
     setIsReplying(true);
   }
 
@@ -109,15 +114,15 @@ function ChatRoom() {
   }
 
   /** array of DOM elements containing responses to an original message */
-  const currThreadMsgs = messages[currThreadId]?.threadMsgs.map((m) => (
+  const currentThreadMsgs = messages[currentThreadId]?.threadMsgs.map((m) => (
     <div key={m.replyId} className="ChatRoom-msg-parent">
       <div id={m.replyId} className={`ChatRoom-msg-txt received`}>
         <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
           <div onClick={handleLikeMessage} className="ChatRoom-msg-like">
-            <FontAwesomeIcon icon="thumbs-up" />
+            <FontAwesomeIcon icon={faThumbsUp} />
           </div>
           <div className="ChatRoom-msg-edit ml-3">
-            <FontAwesomeIcon icon="edit" />
+            <FontAwesomeIcon icon={faEdit} />
           </div>
         </div>
         <p className="font-weight-bold mb-1 px-2">{currUser}</p>
@@ -133,7 +138,7 @@ function ChatRoom() {
       <div className="ChatRoom-name col-12 p-3">
         <div className="my-auto"><p className="my-0">Thread<span>
             {/* TODO 'with ...' should contain x number of participants */}
-            <small> with {currThread.handle}</small>
+            <small> with {currentThread.handle}</small>
           </span>
           </p>
         </div>
@@ -149,19 +154,19 @@ function ChatRoom() {
           <div className={`ChatRoom-msg-txt received`}>
             <div className="ChatRoom-msg-actions mr-3 px-3 py-1">
               <div onClick={handleLikeMessage} className="ChatRoom-msg-like">
-                <FontAwesomeIcon icon="thumbs-up" />
+                <FontAwesomeIcon icon={faThumbsUp} />
               </div>
             </div>
-            <p className="font-weight-bold mb-1 px-2">{currThread.handle}</p>
-            <p className="mb-0 px-2">{currThread.msg}</p>
+            <p className="font-weight-bold mb-1 px-2">{currentThread.handle}</p>
+            <p className="mb-0 px-2">{currentThread.msg}</p>
           </div>
         </div>
-        {currThreadMsgs}
+        {currentThreadMsgs}
       </div>
       <Form
         isThread="true"
         sendMsg={sendMsg}
-        replyToThread={replyToThread}
+        replyInThread={replyInThread}
         notifyTyping={notifyTyping}
         removeTyping={removeTyping}
       />
@@ -186,15 +191,15 @@ function ChatRoom() {
           <FontAwesomeIcon
             className="ChatRoom-msg-reply mr-3 m-1"
             onClick={handleLikeMessage}
-            icon="thumbs-up"
+            icon={faThumbsUp}
           />
           <FontAwesomeIcon
             id="svg"
             className="ChatRoom-msg-reply-btn m-1"
-            icon="comment-dots"
+            icon={faCommentDots}
             onClick={(evt) => handleReplyClick(0, evt)}
           />
-          <FontAwesomeIcon className="ChatRoom-msg-edit ml-3 m-1" icon="edit" />
+          <FontAwesomeIcon className="ChatRoom-msg-edit ml-3 m-1" icon={faEdit} />
         </div>
         <p className="font-weight-bold mb-1 px-2">{m[1].handle}</p>
         <p className="font-weight-light mb-0 px-2">{m[1].msg}</p>
@@ -217,7 +222,7 @@ function ChatRoom() {
           <Form
             isThread="false"
             sendMsg={sendMsg}
-            replyToThread={replyToThread}
+            replyInThread={replyInThread}
             notifyTyping={notifyTyping}
             removeTyping={removeTyping}
           />

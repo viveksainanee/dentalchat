@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import "./Form.css";
+import {
+  faPaperPlane,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 /** Form Component
@@ -7,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
  *  Props:
  *    - isThread: Boolean value to determine context of Form
  *    - sendMsg: fn passed down from parent
- *    - replyToThread: fn passed down from parent
+ *    - replyInThread: fn passed down from parent
  *    - notifyTyping: fn passed down from parent
  *    - removeTyping: fn passed down from parent
  *
@@ -25,7 +28,7 @@ function Form(props) {
   const {
     isThread,
     sendMsg,
-    replyToThread,
+    replyInThread,
     notifyTyping,
     removeTyping,
   } = props;
@@ -50,7 +53,7 @@ function Form(props) {
     if (isThread === "false") {
       sendMsg(formData);
     } else if (isThread === "true") {
-      replyToThread(formData);
+      replyInThread(formData);
     }
     setFormData((fData) => ({
       ...fData,
@@ -85,7 +88,7 @@ function Form(props) {
         />
         <label className="Form-formLabel col-12 text-left">Message</label>
         <button type="submit" className="sendBtn px-3">
-          <FontAwesomeIcon icon="paper-plane" />
+          <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </div>
       

@@ -1,36 +1,36 @@
 .ChatRoom {
-    height: 100vh;
-    width: 100vw;
-    background-color: var(--primary_dark);
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--primary_dark);
 }
 
 .sendBtn {
-    padding: 10px 0 10px 0;
-    background-color: var(--primary_dark);
-    border: 1px solid whitesmoke;
-    border-radius: 2px;
-    color: whitesmoke;
+  padding: 10px 0 10px 0;
+  background-color: var(--primary_dark);
+  border: 1px solid whitesmoke;
+  border-radius: 2px;
+  color: whitesmoke;
 }
 
 .sendBtn:hover {
-    text-decoration: none !important;
-    color: white;
-    background-color: var(--secondary_purple);
-    border: 1px solid var(--secondary_purple);
+  text-decoration: none !important;
+  color: white;
+  background-color: var(--secondary_purple);
+  border: 1px solid var(--secondary_purple);
 }
 
 .formField {
-    position: relative;
+  position: relative;
 }
 
 .Form-input {
-    background-color: var(--primary_dark);
-    margin-top: 25px;
-    padding: 10px;
-    border: none;
-    outline: none;
-    /* border-bottom: .12rem solid #828282c4; */
-    color: whitesmoke;
+  background-color: var(--primary_dark);
+  margin-top: 25px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  /* border-bottom: .12rem solid #828282c4; */
+  color: whitesmoke;
 }
 
 /* #msgInput {
@@ -38,29 +38,29 @@
 } */
 
 .Form-formLabel {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    transition: .5s;
-    pointer-events: none;
-    color: #a0a0a0;
-    letter-spacing: 1px;
-    font-size: 16px;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  transition: 0.5s;
+  pointer-events: none;
+  color: #a0a0a0;
+  letter-spacing: 1px;
+  font-size: 16px;
 }
 
 .Form-input:focus ~ label,
 .Form-input:valid ~ label {
-    top: 15px;
-    left: 0;
-    font-size: 12px;
+  top: 15px;
+  left: 0;
+  font-size: 12px;
 }
 
 .Form-input:focus {
-    border-bottom: .12rem solid #5760d8b6;
+  border-bottom: 0.12rem solid #5760d8b6;
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
   -webkit-box-shadow: 0 0 0px 1000px var(--primary_dark) inset;

@@ -20,12 +20,12 @@ io.on("connection", (socket) => {
   // listens for someone typing
   socket.on("userIsTyping", (handle) => {
     io.in(roomName).emit("userIsTyping", handle);
-  })
- 
+  });
+
   // listens for typing end
   socket.on("userNotTyping", () => {
     io.in(roomName).emit("userNotTyping");
-  })
+  });
 
   socket.on("disconnect", () => {
     socket.leave(roomName);

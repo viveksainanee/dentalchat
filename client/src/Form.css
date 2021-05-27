@@ -5,9 +5,9 @@
 }
 
 .sendBtn {
-    padding: 10px 0 10px 0;
     background-color: var(--primary_dark);
-    border: 1px solid whitesmoke;
+    padding: 10px 0 10px 0;
+    border: .12rem solid #828282c4;
     border-radius: 2px;
     color: whitesmoke;
 }
@@ -16,7 +16,7 @@
     text-decoration: none !important;
     color: white;
     background-color: var(--secondary_purple);
-    border: 1px solid var(--secondary_purple);
+    border: .12rem solid var(--secondary_purple);
 }
 
 .formField {
@@ -29,13 +29,14 @@
     padding: 10px;
     border: none;
     outline: none;
-    /* border-bottom: .12rem solid #828282c4; */
+    border-bottom: .12rem solid #828282c4;
     color: whitesmoke;
+    width: 100%;
 }
 
-/* #msgInput {
-    border-bottom: none;
-} */
+#msgInput {
+    width: calc(100% - 52px);
+}
 
 .Form-formLabel {
     position: absolute;

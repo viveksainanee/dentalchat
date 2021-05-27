@@ -17,6 +17,11 @@ io.on("connection", (socket) => {
     io.in(roomName).emit("newChat", data);
   });
 
+  // Listen for new message in threads
+  socket.on("newThreadReply", (data) => {
+    io.in(roomName).emit("newThreadReply", data);
+  });
+
   // listens for someone typing
   socket.on("userIsTyping", (handle) => {
     io.in(roomName).emit("userIsTyping", handle);

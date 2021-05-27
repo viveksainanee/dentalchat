@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Form from "./Form";
 import "./ChatRoom.css";
@@ -26,7 +26,6 @@ function ChatRoom() {
   const [currentThread, setCurrentThread] = useState();
   const [currentThreadId, setCurrentThreadId] = useState("");
   const [currUser, setCurrUser] = useState(false);
-  // set state for room members
   const { roomName } = useParams();
   const roomId = roomName === "null" ? "Chat Room" : roomName;
   const {
@@ -40,11 +39,11 @@ function ChatRoom() {
 
   function sendMsg(fData) {
     sendMessage(fData);
-    /** TODO: currUser should be set in settings before app can be used */
     if (!currUser) setCurrUser(fData.handle);
   }
 
   function replyInThread(fData) {
+    fData.handle = currUser;
     sendInThread(fData, currentThreadId);
   }
 
@@ -81,14 +80,12 @@ function ChatRoom() {
     setIsReplying(true);
   }
 
-  /** TODO */
   function handleLikeMessage() {
     console.log("message liked");
   }
 
   /** given a root message,
    *  returns appropriate count and tense (reply vs replies) */
-  // TODO: consider better function name
   function calculateReplies(msgObject) {
     if (msgObject.threadMsgs.length === 1) {
       return (
@@ -125,7 +122,7 @@ function ChatRoom() {
             <FontAwesomeIcon icon={faEdit} />
           </div>
         </div>
-        <p className="font-weight-bold mb-1 px-2">{currUser}</p>
+        <p className="font-weight-bold mb-1 px-2">{m.handle}</p>
         <p className="mb-0 px-2">{m.msg}</p>
       </div>
     </div>

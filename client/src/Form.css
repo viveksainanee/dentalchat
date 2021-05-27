@@ -33,10 +33,6 @@
     width: calc(100% - 52px);
 }
 
-/* #msgInput {
-    border-bottom: none;
-} */
-
 .Form-formLabel {
     position: absolute;
     top: 30px;

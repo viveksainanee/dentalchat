@@ -1,4 +1,5 @@
 .ChatRoom {
+<<<<<<< HEAD
     height: 100vh;
     margin: 0;
     background-color: var(--primary_dark);
@@ -15,10 +16,43 @@
 
 .received {
     background-color: var(--primary_dark);
+=======
+  height: 90vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ChatRoom-name {
+  color: var(--primary_purple);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+#msgBubbles {
+  padding: 10px;
+  /* border-radius: 20px; */
+  width: fit-content;
+  max-width: 50%;
+  margin-bottom: 10px;
+}
+
+.sent {
+  background-color: var(--secondary_purple);
+  border-radius: 20px 20px 0 20px;
+}
+
+.received {
+  background-color: var(--primary_dark);
+  border-radius: 20px 20px 20px 0;
+>>>>>>> header with home link
 }
 
 
 .ChatRoom-msgs {
+<<<<<<< HEAD
     position: relative;
     height: 600px;
     padding: 20px;
@@ -95,3 +129,25 @@
     font-weight: bold;
     letter-spacing: 2px;
 }
+=======
+  position: relative;
+  min-height: 500px;
+  padding: 20px 20px;
+  background-color: #242424;
+  color: whitesmoke;
+  border-radius: 15px;
+  box-shadow: 3px 3px 0.5em 0.01em var(--secondary_purple),
+    -3px -3px 0.5em 0.01em var(--secondary_purple), inset 0px 0px 0.4em #2e2e2e;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.isTypingDiv {
+  position: absolute;
+  bottom: 15px;
+  color: #a0a0a0;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+>>>>>>> header with home link

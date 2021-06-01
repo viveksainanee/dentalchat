@@ -4,6 +4,7 @@ import {
   faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import getDateTime from './timestamp';
 
 /** Form Component
  *
@@ -48,10 +49,12 @@ function Form(props) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    // get timestamp
+    const { date, time } = getDateTime();
     if (isThread === "false") {
-      sendMsg(formData);
+      sendMsg(formData, date, time);
     } else if (isThread === "true") {
-      replyInThread(formData);
+      replyInThread(formData, date, time);
     }
     setFormData((fData) => ({
       ...fData,

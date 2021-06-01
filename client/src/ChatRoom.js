@@ -36,14 +36,14 @@ function ChatRoom() {
     usersCurrentlyTyping,
   } = useChat(roomId);
 
-  function sendMsg(fData) {
-    sendMessage(fData);
+  function sendMsg(fData, date, time) {
+    sendMessage(fData, date, time);
     if (!currUser) setCurrUser(fData.handle);
   }
 
-  function replyInThread(fData) {
+  function replyInThread(fData, date, time) {
     fData.handle = currUser;
-    sendInThread(fData, currentThreadId);
+    sendInThread(fData, currentThreadId, date, time);
   }
 
   function notifyTyping(handle) {
@@ -121,7 +121,11 @@ function ChatRoom() {
             <FontAwesomeIcon icon={faEdit} />
           </div>
         </div>
-        <p className="font-weight-bold mb-1 px-2">{m.handle}</p>
+        <p className="font-weight-bold mb-1 px-2">{m.handle}
+        <span>
+            <small className="timestamp"> - {m.time}</small>
+          </span>
+        </p>
         <p className="mb-0 px-2">{m.msg}</p>
       </div>
     </div>
@@ -153,7 +157,11 @@ function ChatRoom() {
                 <FontAwesomeIcon icon={faThumbsUp} />
               </div>
             </div>
-            <p className="font-weight-bold mb-1 px-2">{currentThread.handle}</p>
+            <p className="font-weight-bold mb-1 px-2">{currentThread.handle}
+            <span>
+            <small className="timestamp"> - {currentThread.time}</small>
+              </span>
+            </p>
             <p className="mb-0 px-2">{currentThread.msg}</p>
           </div>
         </div>
@@ -178,7 +186,17 @@ function ChatRoom() {
       </div>
     ) : (
       ""
-  );
+    );
+  
+  // console.log(new Intl.DateTimeFormat('en-US',
+  //   {
+  //     year: 'numeric',
+  //     month: '2-digit',
+  //     day: '2-digit',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit'
+  //   }).format(new Date().getTime()));
 
   /** array of DOM elements containing original messages */
   const currMsgs = Object.entries(messages).map((m) => (
@@ -198,7 +216,11 @@ function ChatRoom() {
           />
           <FontAwesomeIcon className="ChatRoom-msg-edit ml-3 m-1" icon={faEdit} />
         </div>
-        <p className="font-weight-bold mb-1 px-2">{m[1].handle}</p>
+        <p className="font-weight-bold mb-1 px-2">{m[1].handle}
+          <span>
+            <small className="timestamp"> - {m[1].time}</small>
+          </span>
+        </p>
         <p className="font-weight-light mb-0 px-2">{m[1].msg}</p>
         {calculateReplies(m[1])}
       </div>

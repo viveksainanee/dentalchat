@@ -33,6 +33,8 @@ function useChat(roomName) {
           msg: fData.msg,
           handle: fData.handle,
           senderId: socketRef.current.id,
+          date,
+          time,
         }                                   */
     socketRef.current.on("newChat", (message) => {
       const msgId = message.msgId;
@@ -53,7 +55,9 @@ function useChat(roomName) {
           newThreadMsgId: "eb7...", 
           msg: "string", 
           handle: "string", 
-          senderId: "2mm..."
+          senderId: "2mm...",
+          date,
+          time,
         }                               */
     socketRef.current.on("newThreadReply", (message) => {
       const threadId = message.newThreadMsgId;
@@ -90,22 +94,26 @@ function useChat(roomName) {
   }, [roomName, messages]);
   /*************** END useEFFECT **************/
 
-  function sendMessage(fData) {
+  function sendMessage(fData, date, time) {
     const msgId = uuid();
     socketRef.current.emit("newChat", {
       msgId,
       msg: fData.msg,
       handle: fData.handle,
       senderId: socketRef.current.id,
+      date,
+      time,
     });
   }
 
-  function sendInThread(fData, newThreadMsgId) {
+  function sendInThread(fData, newThreadMsgId, date, time) {
     socketRef.current.emit("newThreadReply", {
       newThreadMsgId,
       msg: fData.msg,
       handle: fData.handle,
       senderId: socketRef.current.id,
+      date,
+      time,
     });
   }
 

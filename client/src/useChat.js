@@ -16,9 +16,11 @@ function useChat(roomName) {
 
   /** function runs only after initial render */
   useEffect(() => {
-    const msgsInLocalStorage = localStorage.getItem('messages') !== "{}"
-      ? localStorage.getItem('messages')
-      : '';
+    let msgsInLocalStorage = localStorage.getItem('messages');
+    
+    if (msgsInLocalStorage === "{}") {
+      msgsInLocalStorage = '';
+    }
 
     if (msgsInLocalStorage && msgsInLocalStorage !== '') {
       setMessages(JSON.parse(msgsInLocalStorage));

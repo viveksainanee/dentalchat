@@ -14,11 +14,24 @@ function useChat(roomName) {
   const [isTyping, setIsTyping] = useState(false);
   const socketRef = useRef();
 
+  /** function runs only after initial render */
+  useEffect(() => {
+    let msgsInLocalStorage = localStorage.getItem('messages');
+    
+    if (msgsInLocalStorage === "{}") {
+      msgsInLocalStorage = '';
+    }
+
+    if (msgsInLocalStorage && msgsInLocalStorage !== '') {
+      setMessages(JSON.parse(msgsInLocalStorage));
+    }
+  }, []);
+
+
   useEffect(() => {
     socketRef.current = io(SERVER, {
       query: { roomName },
     });
-
 
     /*************************************
      *************************************
@@ -83,10 +96,15 @@ function useChat(roomName) {
       });
     });
 
+    // adds every message and thread to local storage
+    const msgsCopy = JSON.stringify(messages);
+    localStorage.setItem('messages', msgsCopy);
+
     // ends connection
     return () => {
       socketRef.current.disconnect();
     };
+
   }, [roomName, messages]);
   /*************** END useEFFECT **************/
 
